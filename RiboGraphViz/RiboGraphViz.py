@@ -458,7 +458,7 @@ class RiboGraphViz(object):
     def run_structure_properties(self):
 
         self.calc_MLD()
-        self.n_hairpins, self.n_internal_loops, self.n_3WJs, self.n_4WJs, self.n_5WJs_up = self.count_loops()
+        self.n_hairpins, self.n_internal_loops, self.n_3WJs, self.n_4WJs, self.n_5WJs, self.n_6WJs = self.count_loops()
         self.struct_properties_ran = True
 
     def calc_MLD(self):
@@ -482,7 +482,7 @@ class RiboGraphViz(object):
             self.MLD = nx.shortest_path_length(subgraph, node1, node2, weight='MLD_weight')
 
     def count_loops(self):
-        n_1, n_2, n_3, n_4, n_5 = 0,0,0,0,0
+        n_1, n_2, n_3, n_4, n_5, n_6 = 0,0,0,0,0, 0
         nodes = [n for n in list(self.G.nodes) if not isinstance(n,str)]
         subgraph = self.G.subgraph(nodes)
         subgraph = subgraph.to_undirected()
@@ -496,9 +496,11 @@ class RiboGraphViz(object):
                 n_3 += 1
             elif x[1] == 4:
                 n_4 += 1
-            elif x[1] > 4:
+            elif x[1] == 5:
                 n_5 += 1
-        return n_1 - 1, n_2, n_3, n_4, n_5 #subtract off 1 to not count exterior loop as hairpin
+            elif x[1] > 5:
+                n_6 += 1
+        return n_1 - 1, n_2, n_3, n_4, n_5, n_6 #subtract off 1 to not count exterior loop as hairpin
 
     def get_info(self):
         if not self.struct_properties_ran:
@@ -509,5 +511,5 @@ class RiboGraphViz(object):
         print("n_internal_loops: %d" % self.n_internal_loops)
         print("n_3WJs: %d" % self.n_3WJs)
         print("n_4WJs: %d" % self.n_4WJs)
-        print("n_5WJs_up: %d" % self.n_5WJs_up)
+        print("n_5WJs_up: %d" % self.n_5WJs)
 
