@@ -500,6 +500,27 @@ class RiboGraphViz(object):
                 n_5 += 1
         return n_1 - 1, n_2, n_3, n_4, n_5 #subtract off 1 to not count exterior loop as hairpin
 
+    def junctions(self):
+        nodes = [n for n in list(self.G.nodes) if not isinstance(n, str)]
+        subgraph = self.G.subgraph(nodes)
+        subgraph = subgraph.to_undirected()
+        
+        junction_counts = {}  # Use a dictionary to count junctions of each order
+        
+        for x in list(subgraph.degree):
+            degree = x[1]
+            if degree not in junction_counts:
+                junction_counts[degree] = 0
+            junction_counts[degree] += 1
+    
+        # Adjust the dictionary to account for your specific needs,
+        # such as not counting the exterior loop as a hairpin
+        if 1 in junction_counts:
+            junction_counts[1] -= 1
+        
+        return junction_counts
+
+
     def get_info(self):
         if not self.struct_properties_ran:
             self.run_structure_properties()
