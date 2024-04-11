@@ -520,6 +520,18 @@ class RiboGraphViz(object):
         
         return junction_counts
 
+    def get_properties(self):
+        if not self.struct_properties_ran:
+            self.run_structure_properties()
+
+        to_return = {
+            'MLD' : self.MLD,
+            'Hairpins' : self.n_hairpins,
+            'Junctions' : self.junctions,
+            'Stems' : self.stems
+        }
+
+        return to_return
 
     def get_info(self):
         if not self.struct_properties_ran:
