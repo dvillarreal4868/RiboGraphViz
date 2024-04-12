@@ -527,7 +527,7 @@ class RiboGraphViz(object):
         to_return = {
             'MLD' : self.MLD,
             'Hairpins' : self.n_hairpins,
-            'Junctions' : self.junctions,
+            'Junctions' : self.junctions(),
             'Stems' : self.stems
         }
 
